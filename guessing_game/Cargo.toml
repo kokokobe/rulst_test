@@ -5,3 +5,5 @@ authors = ["梁文亮 <liangwenliang@corp.netease.com>"]
 edition = "2018"
 
 [dependencies]
+rand = "0.6.5"
+
