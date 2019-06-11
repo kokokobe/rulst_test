@@ -1,9 +1,9 @@
 mod raw_identifier;
 mod sound;
 mod shadowing;
+mod data_type;
 //一般枚举、结构体、其他项目直接使用use
-use std::collections::{HashMap, LinkedList};
-use std::collections::*;
+use std::collections::{HashMap};
 
 mod performance_group {
     //重导入，当做成员变量使用
@@ -22,8 +22,9 @@ fn main() {
     raw_identifier::test1();
     let mut v = plant::Vegetable::new("squash");
     v.name = String::from("butternut squash");
-    println!("{} are delicious", v.name);
-    let order1 = menu::Appetizer::Soup;
+    println!("{},id:{} are delicious", v.name, v.id);
+    let _order1 = menu::Appetizer::Soup;
+    let _order2 = menu::Appetizer::Salad;
     let mut map = HashMap::new();
     map.insert(1, 2);
     println!("map is :{:?}", map);
@@ -36,7 +37,7 @@ fn main() {
 mod plant {
     pub struct Vegetable {
         pub name: String,
-        id: i32,
+        pub id: i32,
     }
 
     impl Vegetable {
