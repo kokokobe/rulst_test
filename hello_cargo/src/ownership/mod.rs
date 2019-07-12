@@ -83,6 +83,66 @@ mod tests {
         println!("The length of '{}' is {}", s2, len);
     }
 
+    #[test]
+    fn test_references_and_borrowing() {
+        let mut s1 = String::from("hello");
+        //&引用传递，不需要获取所有权
+        //&s1 创建了另一个引用指向s1,并且不拥有它
+        //不能租借2次可变的引用
+        //let r1 = &mut s1;
+        //let r2 = &mut s1;
+        //println!("{}, {}", r1, r2);
+        let len = calculate_length2(&mut s1);
+
+
+        println!("The length of '{}' is {}.", s1, len);
+    }
+
+    #[test]
+    fn test_references_and_borrowing2() {
+        //使用大括号构成一个新的范围
+        let mut s = String::from("hello");
+        {
+            let r1 = &mut s;
+            println!("r1 is :{}", r1);
+        };// r1 goes out of scope here, so we can make a new reference with no problems.
+        //租借完之后才能使用s 指针
+        let r2 = &mut s;
+        println!("r2 is :{}", r2);
+        println!("s is :{}", s);
+    }
+
+    #[test]
+    fn test_references_and_borrowing3() {
+        // Note that a reference's scope starts from where it is introduced and
+        // continues through the last time that reference is used. For instance, this code will compile
+        // because the last usage of the immutable references occurs before the mutable reference is introduced:
+        //租借的不可变得引用期待的是读的操作，在读完之后再租借为可变引用时可以进行写操作
+        let mut s = String::from("hello");
+        let r1 = &s; // no problem
+        let r2 = &s; // no problem
+        println!("r1 is {} and r2 is {},s is {}", r1, r2, s);
+        // r1 and r2 are no longer used after this point
+        let r3 = &mut s;
+        println!("r3 is {}", r3);
+    }
+
+    #[test]
+    fn test_dangling_references() {
+        let reference_to_nothing = dangle();
+        fn dangle() -> &String { // dangle returns a reference to a String
+            let s = String::from("hello"); // s is a new String
+            &s // we return a reference to the String, s
+        }// Here, s goes out of scope, and is dropped. Its memory goes away.
+        // Danger!
+    }
+
+    #[test]
+    fn test_slice_type() {
+
+    }
+
+
     fn takes_ownership(some_string: String) { // some_string comes into scope
         println!("some_string is: {}", some_string);
     }// Here, some_string goes out of scope and `drop` is called. The backing
@@ -111,4 +171,11 @@ mod tests {
         let length = s.len(); // len() returns the length of a String
         (s, length)
     }
+
+    //这种函数拥有引用的称为租借borrowing
+    fn calculate_length2(s: &mut String) -> usize {// s is a reference to a String
+        s.push_str(", world!");
+        s.len()
+    }// Here, s goes out of scope. But because it does not have ownership of what
+    // it refers to, nothing happens.
 }
