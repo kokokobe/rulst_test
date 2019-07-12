@@ -178,4 +178,15 @@ mod tests {
         s.len()
     }// Here, s goes out of scope. But because it does not have ownership of what
     // it refers to, nothing happens.
+
+    fn first_word(s: &String) -> usize {
+        let bytes = s.as_bytes();
+        //enumerate 的作用是包装iter函数的返回值为元祖数据
+        for (i, &item) in bytes.iter().enumerate() {
+            if item == b' ' {
+                return i;
+            }
+        }
+        s.len()
+    }
 }
