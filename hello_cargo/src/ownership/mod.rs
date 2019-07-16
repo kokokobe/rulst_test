@@ -130,18 +130,60 @@ mod tests {
     #[test]
     fn test_dangling_references() {
         let reference_to_nothing = dangle();
-        fn dangle() -> &String { // dangle returns a reference to a String
+        fn dangle() -> String { // dangle returns a reference to a String
             let s = String::from("hello"); // s is a new String
-            &s // we return a reference to the String, s
+            s // we return a reference to the String, s
         }// Here, s goes out of scope, and is dropped. Its memory goes away.
         // Danger!
+        println!("dangle is {}", reference_to_nothing);
     }
 
     #[test]
     fn test_slice_type() {
-
+        let first = String::from("sexy girl");
+        let word = first_word(&first);
+        //first.clear();
+        println!("first word is:{}", word);
+        let s = String::from("hello world");
+        let hello = &s[0..5];
+        let world = &s[6..11];
+        let hello2 = &s[..5];
+        println!("hello is {},world is {},hello2 is {}", hello, world, hello2);
+        let s2 = String::from("hello");
+        let len = s2.len();
+        let slice = &s2[3..len];
+        println!("slice is {}", slice);
+        let slice = &s2[3..];
+        println!("slice is {}", slice);
+        let slice = &s2[..];
+        println!("slice is {}", slice);
     }
 
+    #[test]
+    fn test_slice_str_type() {
+        let my_string = String::from("hello world");
+        //first_word works on slices of `String` s
+        let s = &my_string[..];
+        let word = first_word(s);
+        println!("word is :{}", word);
+        //栈上分配字符引用，已经是slice
+        let my_string_literal = "hello world";
+        //first_word works on slices of string literals
+        let word = first_word(&my_string_literal[..]);
+        println!("word is :{}", word);
+        //because string literals *are* string slices already,
+        //this works too,without the slice syntax!
+        let word = first_word(my_string_literal);
+        println!("word is :{}", word);
+    }
+
+    #[test]
+    fn test_slice_tuple(){
+        let a = [1, 2, 3, 4, 5, ];
+        //不包含3的边界值
+        let slice = &a[1..3];
+        println!("slice tuple is {:?}", slice);
+    }
 
     fn takes_ownership(some_string: String) { // some_string comes into scope
         println!("some_string is: {}", some_string);
@@ -179,14 +221,18 @@ mod tests {
     }// Here, s goes out of scope. But because it does not have ownership of what
     // it refers to, nothing happens.
 
-    fn first_word(s: &String) -> usize {
+
+    fn first_word(s: &str) -> &str {//字符串切片引用
         let bytes = s.as_bytes();
         //enumerate 的作用是包装iter函数的返回值为元祖数据
-        for (i, &item) in bytes.iter().enumerate() {
+        //因为as_bytes()函数返回的是引用
+        //因为enumerate 返回的是引用，所以&item也是
+        let enumerate = bytes.iter().enumerate();
+        for (i, &item) in enumerate {
             if item == b' ' {
-                return i;
+                return &s[0..i]
             }
         }
-        s.len()
+        &s[..]
     }
 }

@@ -5,6 +5,7 @@ mod data_type;
 mod function;
 mod control_flow;
 mod ownership;
+mod structure;
 //一般枚举、结构体、其他项目直接使用use
 use std::collections::{HashMap};
 
