@@ -9,7 +9,7 @@ mod tests {
         }                      // this scope is now over, and s is no longer valid
         //并不是基本字符串类型就可以满足所有情况，比如声明时不分配，而是用户输入分配
         //比如说字符串可变长度
-        //同样一个字符可以再stack分配，也可以在heap分配
+        //同样一个字符可以在stack分配，也可以在heap分配
         {
             let mut s = String::from("hello");
             s.push_str(", world!");
