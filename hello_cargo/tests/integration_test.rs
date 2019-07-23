@@ -1,3 +1,10 @@
+mod data_type;
+mod function;
+mod control_flow;
+mod ownership;
+mod structure;
+mod enums;
+mod module;
 #[test]
 fn exploration() {
     assert_eq!(2 + 2, 4);
