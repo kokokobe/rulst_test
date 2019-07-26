@@ -127,4 +127,12 @@ mod tests {
         let str = "नमस्ते";
         println!("नमस्ते store value is:{:?}", str.as_bytes());
     }
+
+    #[test]
+    fn test_slice_str(){
+        //这个字符每个符号用2个字节存储,0..4表示前四个字节
+        let hello = "Здравствуйте";
+        let s = &hello[0..4];
+        println!("slice str is:{}", s);
+    }
 }
