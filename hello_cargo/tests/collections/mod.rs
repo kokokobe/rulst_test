@@ -1,5 +1,6 @@
 #[cfg(test)]
 mod tests {
+    use std::collections::HashMap;
 
     #[test]
     fn test_collections_vector() {
@@ -104,6 +105,7 @@ mod tests {
         //format! 宏类似println! 但是它返回一个值而不是打印到控制台
         //format! 不会用占用任何的参数
         let s = format!("{}-{}-{}", s1, s2, s3);
+        println!("format s  is:{}", s);
     }
 
     #[test]
@@ -129,10 +131,80 @@ mod tests {
     }
 
     #[test]
-    fn test_slice_str(){
+    #[should_panic]
+    fn test_slice_str() {
         //这个字符每个符号用2个字节存储,0..4表示前四个字节
         let hello = "Здравствуйте";
         let s = &hello[0..4];
         println!("slice str is:{}", s);
+        &hello[0..1];
+    }
+
+    #[test]
+    fn test_iterating_strings() {
+        let str = "नमस्ते";
+        for c in str.chars() {
+            println!("{}", c);
+        }
+    }
+
+    #[test]
+    fn test_hash_map() {
+        let mut scores_map = HashMap::with_capacity(2);
+        scores_map.insert(String::from("Blue"), 10);
+        scores_map.insert(String::from("Yellow"), 50);
+        println!("score_map is {:?}", scores_map);
+        let teams = vec![String::from("Blue"), String::from("Yellow")];
+        let initial_scores = vec![10, 50];
+        let scores: HashMap<_, _> = teams.iter().zip(initial_scores.iter()).collect();
+        println!("scores is:{:?}", scores);
+    }
+
+    #[test]
+    fn test_hash_map_ownership() {
+        let field_name = String::from("Favorite color");
+        let field_value = String::from("Blue");
+        let mut map = HashMap::new();
+        map.insert(field_name, field_value);
+        // field_name and field_value are invalid at this point, try using them and
+        // see what compiler error you get!
+        println!("owner map is:{:?}", map);
+        //至于在map中放入引用类型的，必须保证声明周期，引用类型的生命周期必须比map长
+    }
+
+    #[test]
+    fn test_hash_map_access() {
+        let mut scores = HashMap::new();
+        scores.insert(String::from("Blue"), 10);
+        scores.insert(String::from("Yellow"), 50);
+        let team_name = String::from("Blue");
+        let score = scores.get(&team_name);
+        println!("scores map value is:{:?}", score);
+        for (key, value) in &scores {
+            println!("{}: {}", key, value);
+        };
+    }
+
+    #[test]
+    fn test_update_hash_map() {
+        //overwriting a value
+        let mut scores = HashMap::new();
+        scores.insert(String::from("Blue"), 10);
+        scores.insert(String::from("Blue"), 25);
+        println!("insert duplicate hash key with value is:{:?}", scores);
+        //Only Inserting a Value If the Key Has No Value
+        let mut scores= HashMap::new();
+        scores.insert(String::from("Blue"), 10);
+        scores.entry(String::from("Yellow")).or_insert(50);
+        scores.entry(String::from("Blue")).or_insert(50);
+        println!("new entry value is {:?}", scores);
+        //Updating a Value Based on the Old Value
+        let text = "hello world wonderful world";
+        let mut map = HashMap::new();
+        for word in text.split_whitespace() {
+            let count = map.entry(word).or_insert(0);
+            *count += 1;
+        }
+        println!("the word occur times is:{:?}", map);
     }
 }
