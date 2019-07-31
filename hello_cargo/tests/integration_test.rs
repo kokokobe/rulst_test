@@ -6,6 +6,8 @@ mod structure;
 mod enums;
 mod module;
 mod collections;
+mod error_handle;
+
 #[test]
 fn exploration() {
     assert_eq!(2 + 2, 4);

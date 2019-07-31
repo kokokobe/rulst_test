@@ -207,4 +207,25 @@ mod tests {
         }
         println!("the word occur times is:{:?}", map);
     }
+
+    #[test]
+    fn test_collection_exercise() {
+        let mut number_vec = vec![1, 2, 3, 553, 5462, 777, 436, 6782432, 3334, 673, 777];
+        let average = number_vec.iter().sum::<i32>() as f32 / number_vec.len() as f32;
+
+        number_vec.sort();
+        println!("sorted number vec is:{:?}", number_vec);
+        let mid = number_vec.len() / 2;
+        let median = number_vec[mid];
+
+        let mut map = HashMap::with_capacity(number_vec.len());
+        for x in &number_vec {
+            let val = map.entry(x).or_insert(0);
+            *val += 1;
+        };
+        let mode = map.into_iter().max_by_key(|&(_, count)| count).map(|(val, _)| val)
+            .expect("Cannot compute the mode of zero numbers");
+        println!("average is:{},median is:{},mode is:{}", average, median, mode);
+    }
+
 }
