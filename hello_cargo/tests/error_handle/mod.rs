@@ -9,4 +9,8 @@ mod tests {
         panic!("test panic")
     }
 
+    #[test]
+    fn test_panic_backtrace(){
+
+    }
 }
