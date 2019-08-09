@@ -2,6 +2,24 @@ use std::io;
 use std::cmp::Ordering;
 use rand::Rng;
 
+#[derive(Debug)]
+pub struct Guess {
+    value: i32
+}
+
+impl Guess {
+    pub fn new(value: i32) -> Guess {
+        if value < 1 || value > 100 {
+            panic!("Guess value must be between 1 and 100, got {}.", value);
+        }
+        Guess {
+            value
+        }
+    }
+    pub fn value(&self) -> i32 {
+        self.value
+    }
+}
 
 fn main() {
     println!("Guess the number !");
@@ -13,14 +31,18 @@ fn main() {
         let mut guess = String::new();
         //这是个引用，引用默认也是不可变的，这里声明为可变的
         io::stdin().read_line(&mut guess).expect("Failed to read line");
-        let guess: u32 = match guess.trim().parse() {
+        let guess: i32 = match guess.trim().parse() {
             Ok(num) => num,
             //下划线表示捕获所有异常
-            Err(_) => continue,
+            Err(_) => {
+                println!("Please input number!");
+                continue;
+            }
         };
-        println!("You guessed: {}", guess);
+        let guess = Guess::new(guess);
+        println!("You guessed: {:?}", guess);
 
-        match guess.cmp(&secret_number) {
+        match guess.value.cmp(&secret_number) {
             Ordering::Less => println!("Too small!"),
             Ordering::Greater => println!("Too big!"),
             Ordering::Equal => {

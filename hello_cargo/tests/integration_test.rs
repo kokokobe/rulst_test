@@ -7,7 +7,7 @@ mod enums;
 mod module;
 mod collections;
 mod error_handle;
-
+mod generic_trait_lifetime;
 #[test]
 fn exploration() {
     assert_eq!(2 + 2, 4);
