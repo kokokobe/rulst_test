@@ -496,7 +496,7 @@ mod tests {
         let str1 = "BriLiang";
         let announcement;
         {
-            fn hahah(str: &str) -> &str {
+            fn hahah(_str: &str) -> &str {
                 let str2 = "hello";
                 str2
             }
