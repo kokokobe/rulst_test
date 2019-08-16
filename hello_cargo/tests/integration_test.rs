@@ -8,6 +8,8 @@ mod module;
 mod collections;
 mod error_handle;
 mod generic_trait_lifetime;
+mod functional_feature;
+
 #[test]
 fn exploration() {
     assert_eq!(2 + 2, 4);

@@ -1,6 +1,6 @@
-mod float;
-mod number;
-mod tuple_and_array;
+pub mod float;
+pub mod number;
+pub mod tuple_and_array;
 
 pub fn test(){
     println!("data type");
