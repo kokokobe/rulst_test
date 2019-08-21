@@ -1,7 +1,0 @@
-[package]
-name = "test_data"
-version = "0.1.0"
-authors = ["梁文亮 <kobetys@163.com>"]
-edition = "2018"
-
-[dependencies]
