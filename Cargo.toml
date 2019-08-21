@@ -1,0 +1,9 @@
+[workspace]
+members=["briliang_exercise","guessing_game"]
+
+[profile.release]
+panic = 'abort'
+opt-level = 3
+
+[profile.dev]
+opt-level = 0

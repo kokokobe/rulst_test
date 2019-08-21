@@ -1,6 +1,7 @@
 use std::io;
 use std::cmp::Ordering;
 use rand::Rng;
+use briliang_exercise::data_type::number::number_operation;
 
 #[derive(Debug)]
 pub struct Guess {
@@ -22,6 +23,7 @@ impl Guess {
 }
 
 fn main() {
+    number_operation();
     println!("Guess the number !");
     let secret_number = rand::thread_rng().gen_range(1, 101);
     //println!("The secret number is: {}", secret_number);
@@ -50,6 +52,6 @@ fn main() {
                 break;
             }
         };
-    }
+    };
 }
 
