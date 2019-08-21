@@ -53,7 +53,7 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
 /// # Examples
 /// ```
 /// let arg = "dd";
-/// let vec = hello_cargo::search(arg,"ddaa");
+/// let vec = briliang_exercise::search(arg,"ddaa");
 /// assert_eq!(vec!["ddaa"],vec);
 /// ```
 pub fn search<'a>(query: &str, content: &'a str) -> Vec<&'a str> {

@@ -1,6 +1,6 @@
-use hello_cargo::data_type::number::number_operation;
+use briliang_exercise::data_type::number::number_operation;
 use std::{env, process};
-use hello_cargo::Config;
+use briliang_exercise::Config;
 
 fn main() {
     number_operation();
@@ -8,7 +8,7 @@ fn main() {
         eprintln!("Problem parsing arguments: {}", err);
         process::exit(1);
     });
-    if let Err(e) = hello_cargo::run(config) {
+    if let Err(e) = briliang_exercise::run(config) {
         eprintln!("Application  error :{}", e);
         process::exit(1);
     };

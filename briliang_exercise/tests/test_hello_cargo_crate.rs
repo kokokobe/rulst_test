@@ -2,6 +2,6 @@
 //extern crate briliang_exercise;
 
 #[test]
-fn test_hello_cargo() {
-    hello_cargo::data_type::test();
+fn test_briliang_exercise() {
+    briliang_exercise::data_type::test();
 }
