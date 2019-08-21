@@ -1,5 +1,5 @@
 //新特性不需要使用了
-//extern crate hello_cargo;
+//extern crate briliang_exercise;
 
 #[test]
 fn test_hello_cargo() {
