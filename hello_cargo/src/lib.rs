@@ -1,7 +1,9 @@
+//! # Mini Grep
 use std::{fs, env};
 use std::error::Error;
 
 pub mod data_type;
+
 
 #[derive(Debug)]
 pub struct Config {
@@ -11,12 +13,19 @@ pub struct Config {
 }
 
 impl Config {
-    pub fn new(args: &[String]) -> Result<Config, &'static str> {
+    pub fn new(mut args: std::env::Args) -> Result<Config, &'static str> {
         if args.len() < 3 {
             return Err("not enough arguments");
         }
-        let query = args[1].clone();
-        let file_name = args[2].clone();
+        args.next();
+        let query = match args.next() {
+            Some(arg) => arg,
+            None => return Err("Didn't get a query string"),
+        };
+        let file_name = match args.next() {
+            Some(arg) => arg,
+            None => return Err("Didn't get a file name"),
+        };
         let case_sensitive = env::var("CASE_INSENSITIVE").is_err();
         Ok(Config {
             query,
@@ -40,25 +49,21 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
+/// search query string in content inline
+/// # Examples
+/// ```
+/// let arg = "dd";
+/// let vec = hello_cargo::search(arg,"ddaa");
+/// assert_eq!(vec!["ddaa"],vec);
+/// ```
 pub fn search<'a>(query: &str, content: &'a str) -> Vec<&'a str> {
-    let mut result = Vec::new();
-    for line in content.lines() {
-        if line.contains(query) {
-            result.push(line)
-        }
-    }
-    result
+    content.lines().filter(|line| line.contains(query)).collect()
 }
 
 pub fn search_case_insensitive<'a>(query: &str, content: &'a str) -> Vec<&'a str> {
-    let mut result = Vec::new();
-    let lower_case_query = &query.to_lowercase();
-    for line in content.lines() {
-        if line.to_lowercase().contains(lower_case_query) {
-            result.push(line)
-        }
-    }
-    result
+    let lower_case_query = query.to_lowercase();
+    content.lines().filter(|line| line.to_lowercase().contains(&lower_case_query))
+        .collect()
 }
 
 #[cfg(test)]
