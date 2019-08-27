@@ -9,6 +9,7 @@ mod collections;
 mod error_handle;
 mod generic_trait_lifetime;
 mod functional_feature;
+mod smart_pointer;
 
 #[test]
 fn exploration() {

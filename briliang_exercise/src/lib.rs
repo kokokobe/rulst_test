@@ -1,4 +1,6 @@
 //! # Mini Grep
+//! 1. First option is query str
+//! 2. Second is file name
 use std::{fs, env};
 use std::error::Error;
 
