@@ -1,16 +1,3 @@
-mod data_type;
-mod function;
-mod control_flow;
-mod ownership;
-mod structure;
-mod enums;
-mod module;
-mod collections;
-mod error_handle;
-mod generic_trait_lifetime;
-mod functional_feature;
-mod smart_pointer;
-
 #[test]
 fn exploration() {
     assert_eq!(2 + 2, 4);
