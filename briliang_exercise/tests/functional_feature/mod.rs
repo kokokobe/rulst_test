@@ -222,7 +222,7 @@ mod tests {
                 }
             }
         }
-        let mut counter = Counter::new();
+        let counter = Counter::new();
         for x in counter {
             println!("custom iterator counter:{}", x);
         }
