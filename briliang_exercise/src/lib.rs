@@ -16,6 +16,8 @@ mod error_handle;
 mod generic_trait_lifetime;
 mod functional_feature;
 mod smart_pointer;
+mod concurrency;
+mod oop;
 
 #[derive(Debug)]
 pub struct Config {
