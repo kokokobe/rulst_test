@@ -18,6 +18,14 @@ mod functional_feature;
 mod smart_pointer;
 mod concurrency;
 mod oop;
+mod pattern_matching;
+mod advance;
+mod advance_type;
+
+#[macro_use]
+extern crate log;
+extern crate log4rs;
+
 
 #[derive(Debug)]
 pub struct Config {
