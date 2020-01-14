@@ -21,6 +21,7 @@ mod oop;
 mod pattern_matching;
 mod advance;
 mod advance_type;
+mod advance_function_closure;
 
 #[macro_use]
 extern crate log;
