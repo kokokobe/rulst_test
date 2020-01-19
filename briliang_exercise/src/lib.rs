@@ -22,6 +22,14 @@ mod pattern_matching;
 mod advance;
 mod advance_type;
 mod advance_function_closure;
+mod macros;
+
+extern crate proc_macro;
+
+//定义一个macro trait
+pub trait HelloMacro {
+    fn hello_macro();
+}
 
 #[macro_use]
 extern crate log;

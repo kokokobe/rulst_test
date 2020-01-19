@@ -1,5 +1,5 @@
 [workspace]
-members=["briliang_exercise","guessing_game"]
+members=["briliang_exercise","guessing_game","hello_marco_derive"]
 
 [profile.release]
 panic = 'abort'
