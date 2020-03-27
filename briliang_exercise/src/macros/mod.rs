@@ -36,7 +36,17 @@ mod tests {
     fn attribute_like_macro(){
         //和派生式宏差不多，只不过是可以自己定义属性，
         //派生宏仅仅使用在struct、enum上
-        //属性红则可以使用在函数上
+        //属性宏则可以使用在函数上
 
+        //属性宏定义
+        //#[route(GET, "/")]
+        //fn index() {
+        //#[proc_macro_attribute]
+        //pub fn route(attr: TokenStream, item: TokenStream) -> TokenStream {
+
+        //函数式宏定义
+        //let sql = sql!(SELECT * FROM posts WHERE id=1);
+        //#[proc_macro]
+        //pub fn sql(input: TokenStream) -> TokenStream {
     }
 }
