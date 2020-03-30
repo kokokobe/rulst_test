@@ -36,7 +36,7 @@ mod tests {
         generate_workout(simulated_user_specified_value, simulated_random_number);
     }
 
-    //每一个闭包的都是唯一的，并且必须要实现Fn, FnMut Fnonce 中的一个特征
+    //每一个闭包的都是唯一的，并且必须要实现Fn, FnMut FnOnce 中的一个特征
     //函数定义也同样实现了Fn 特征
     struct Cacher<T>
         where T: Fn(u32) -> u32
