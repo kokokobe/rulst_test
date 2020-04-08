@@ -1,5 +1,5 @@
 [workspace]
-members=["briliang_exercise","guessing_game","hello_marco_derive","web_server","async_await-echo"]
+members=["briliang_exercise","guessing_game","hello_marco_derive","web_server"]
 
 [profile.release]
 panic = 'abort'
