@@ -18,7 +18,11 @@ mod tests {
 
     #[test]
     fn primer2() {
-        async fn learn_song() -> Song { /* ... */ }
+        struct Song {}
+        async fn learn_song() -> Song {
+            /* ... */
+            Song {}
+        }
         async fn sing_song(song: Song) { /* ... */ }
         async fn dance() { /* ... */ }
         async fn learn_and_sing() {
@@ -38,5 +42,6 @@ mod tests {
             // `async_main` is blocked and will yield to the executor.
             futures::join!(f1,f2);
         }
+        block_on(async_main());
     }
 }
