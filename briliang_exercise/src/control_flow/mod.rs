@@ -180,18 +180,22 @@ mod tests {
     #[test]
     fn test_if_let_syntax() {
         //只希望匹配 match 中的一个条件逻辑处理
-        let some_u8_value = Some(4u8);
+        let i = 4u8;
+        let some_u8_value = Some(i);
+        println!("{:?}", 4u8);
         match some_u8_value {
             Some(3) => println!("three"),
             _ => println!("not three"),
         }
-        if let Some(3) = some_u8_value {
-            println!("three")
+        if let Some(i) = some_u8_value {
+            println!("three");
+            println!("i is :{}", i);
         } else {
             println!("not three")
         }
-        if Some(3) == some_u8_value {
-            println!("three")
+        if Some(i) == some_u8_value {
+            println!("three");
+            println!("i is :{}", i);
         } else {
             println!("not three")
         }
