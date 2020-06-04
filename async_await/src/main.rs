@@ -1,4 +1,5 @@
 mod async_await_primer;
+mod executing_multiple_futures;
 
 use {
     hyper::{

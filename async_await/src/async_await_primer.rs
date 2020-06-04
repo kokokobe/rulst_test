@@ -5,6 +5,11 @@ mod tests {
     // multiple futures onto the same thread.
     use futures::executor::block_on;
     use std::future::Future;
+    use futures::channel::mpsc;
+    use futures::{SinkExt, StreamExt, Stream};
+    use std::pin::Pin;
+    use std::option::Option::Some;
+    use std::io;
 
     #[test]
     fn primer() {
@@ -24,7 +29,7 @@ mod tests {
             /* ... */
             Song {}
         }
-        async fn sing_song(song: Song) { /* ... */ }
+        async fn sing_song(_song: Song) { /* ... */ }
         async fn dance() { /* ... */ }
         async fn learn_and_sing() {
             // Wait until the song has been learned before singing it.
@@ -258,8 +263,7 @@ mod tests {
         // `pin_utils` is a handy crate available on crates.io
         use pin_utils::pin_mut;
         // A function which takes a `Future` that implements `Unpin`.
-        fn execute_unpin_future(x: impl Future<Output=()> + Unpin) {}
-        let fut = async {};
+        fn execute_unpin_future(_x: impl Future<Output=()> + Unpin) {}
         // Error: `fut` does not implement `Unpin` trait
         // execute_unpin_future(fut);
         // Pinning with 'Box':
@@ -305,5 +309,53 @@ mod tests {
         }
         block_on(move_block());
         block_on(blocks());
+    }
+
+    #[test]
+    fn async_stream() {
+        async fn send_recv() {
+            const BUFFER_SIZE: usize = 10;
+            let (mut tx, mut rx) = mpsc::channel::<i32>(BUFFER_SIZE);
+            tx.send(1).await.unwrap();
+            tx.send(2).await.unwrap();
+            drop(tx);
+            // `StreamExt::next` is similar to `Iterator::next`, but returns a
+            // type that implements `Future<Output = Option<T>>`.
+            assert_eq!(Some(1), rx.next().await);
+            assert_eq!(Some(2), rx.next().await);
+            assert_eq!(None, rx.next().await);
+        }
+        block_on(send_recv());
+        async fn _sum_with_next(mut stream: Pin<&mut dyn Stream<Item=i32>>) -> i32 {
+            // for `next`
+            use futures::stream::StreamExt;
+            let mut sum = 0;
+            while let Some(item) = stream.next().await {
+                sum += item;
+            }
+            sum
+        }
+        async fn _sum_with_try_next(mut stream: Pin<&mut dyn Stream<Item=Result<i32, io::Error>>>) ->
+        Result<i32, io::Error> {
+            use futures::stream::TryStreamExt;
+            let mut sum = 0;
+            // 顺序遍历
+            while let Some(item) = stream.try_next().await? {
+                sum += item;
+            }
+            Ok(sum)
+        }
+        async fn _jump_around(steam: Pin<&mut dyn Stream<Item=Result<u8, io::Error>>>) -> Result<(), io::Error>
+        {
+            // for `try_for_each_concurrent`
+            use futures::stream::TryStreamExt;
+            const MAX_CONCURRENT_JUMPERS: usize = 100;
+            steam.try_for_each_concurrent(MAX_CONCURRENT_JUMPERS, |_num| async move {
+                // jump_n_times(num).await?;
+                // report_n_jumps(num).await?;
+                Ok(())
+            }).await?;
+            Ok(())
+        }
     }
 }
