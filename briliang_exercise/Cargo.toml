@@ -8,7 +8,7 @@ license = "MIT"
 repository = "https://github.com/kokokobe/rust_test"
 
 [dependencies]
-rand = "0.7.0"
+rand = "0.7.3"
 ## log rs
 log = "0.4.8"
 log4rs = {version = "0.11.0"}
