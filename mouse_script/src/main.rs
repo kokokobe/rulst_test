@@ -1,11 +1,12 @@
-mod mouse_operate;
-
-use enigo::*;
 use std::time::{SystemTime, UNIX_EPOCH};
-use mouse_operate::start_end_point_click;
+use mouse_common::mouse_operate;
 
 fn main() {
-    let mut enigo = Enigo::new();
+    play()
+}
+
+fn play() {
+    let mut mouse = mouse_operate::get_engine();
     // 喝水确认按钮
     let drinking_confirm_point = (200, 200);
     // 挑战关卡按钮
@@ -22,11 +23,11 @@ fn main() {
         .expect(" time went backwards");
     loop {
         //选关，开始挑战
-        start_end_point_click(battle_point, fight_point, &mut enigo, true);
+        mouse.start_end_point_click(battle_point, fight_point, true);
         //大跳确认
-        start_end_point_click(all_skip_point, all_skip_point_confirm, &mut enigo, true);
+        mouse.start_end_point_click(all_skip_point, all_skip_point_confirm, true);
         // 喝水确认
-        start_end_point_click(all_skip_point_confirm, drinking_confirm_point, &mut enigo, true);
+        mouse.start_end_point_click(all_skip_point_confirm, drinking_confirm_point, true);
 
         let end_time = SystemTime::now().duration_since(UNIX_EPOCH)
             .expect(" time went backwards");
@@ -34,5 +35,4 @@ fn main() {
             break;
         }
     }
-
 }
