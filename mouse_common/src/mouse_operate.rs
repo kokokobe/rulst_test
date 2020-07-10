@@ -17,7 +17,6 @@ pub fn get_engine() -> Mouse {
 }
 
 impl Mouse {
-
     fn get_random_move_point(point: (i32, i32), point2: (i32, i32), mut rng: ThreadRng) -> (i32, i32) {
         let x1 = point.0;
         let y1 = point.1;
@@ -77,6 +76,10 @@ impl Mouse {
                 break;
             }
         }
+    }
+
+    pub fn mouse_click(&mut self) {
+        self.engine.mouse_click(MouseButton::Left);
     }
 
     pub fn get_mouse_pos(&self) -> (i32, i32) {
