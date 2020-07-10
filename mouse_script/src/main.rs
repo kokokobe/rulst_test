@@ -39,12 +39,19 @@ fn play() {
         mouse.start_end_point_click(battle_point, battle_point, true);
         mouse.start_end_point_click(battle_point, battle_point, true);
         mouse.start_end_point_click(battle_point, battle_point, true);
+        // 开始挑战
         mouse.start_end_point_click(battle_point, fight_point, true);
-        thread::sleep(Duration::from_millis(rng.gen_range(5000, 9000)));
-        //大跳确认
-        mouse.start_end_point_click(all_skip_point, all_skip_point_confirm, true);
+        mouse.start_end_point_click(fight_point, fight_point, true);
         // 喝水确认
-        mouse.start_end_point_click(all_skip_point_confirm, drinking_confirm_point, true);
+        mouse.start_end_point_click(drinking_confirm_point, drinking_confirm_point, true);
+        mouse.start_end_point_click(drinking_confirm_point, drinking_confirm_point, true);
+        // 等待加载画面
+        thread::sleep(Duration::from_millis(rng.gen_range(5000, 9000)));
+        // 大跳确认
+        mouse.start_end_point_click(all_skip_point, all_skip_point_confirm, true);
+        mouse.start_end_point_click(all_skip_point_confirm, all_skip_point_confirm, true);;
+        // 等待执行胜利
+        thread::sleep(Duration::from_millis(rng.gen_range(1000, 2000)));
         // 多点几次
         mouse.mouse_click();
         mouse.mouse_click();
