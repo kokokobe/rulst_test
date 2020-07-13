@@ -3,8 +3,6 @@ use rand::prelude::ThreadRng;
 use enigo::*;
 use std::thread;
 use std::time::Duration;
-use winapi::shared::windef::POINT;
-
 
 pub struct Mouse {
     engine: Enigo,
@@ -83,9 +81,7 @@ impl Mouse {
     }
 
     pub fn get_mouse_pos(&self) -> (i32, i32) {
-        let mut point = POINT { x: 0, y: 0 };
-        unsafe { ::winapi::um::winuser::GetCursorPos(&mut point as *mut POINT) };
-        (point.x, point.y)
+        Enigo::mouse_location()
     }
 }
 

@@ -2,7 +2,6 @@ use std::time::{SystemTime, UNIX_EPOCH, Duration};
 use mouse_common::mouse_operate;
 use std::thread;
 use rand::{thread_rng, Rng};
-
 // 关卡一
 static BATTLE_POINT_1: (i32, i32) = (804, 766);
 // 关卡二
