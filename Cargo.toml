@@ -1,6 +1,6 @@
 [workspace]
 members=["briliang_exercise","guessing_game","hello_marco_derive","web_server","mouse_position",
-"mouse_common","mouse_script","async_await"]
+"mouse_app","mouse_common","mouse_script","async_await"]
 
 [profile.release]
 panic = 'abort'

@@ -3,10 +3,10 @@ use std::thread;
 use mouse_common::mouse_operate;
 use rand::{thread_rng, Rng};
 fn main() {
-    get_mouse_pos_replay();
+    get_mouse_pos();
 }
 
-fn get_mouse_pos_replay() {
+fn get_mouse_pos() {
     let mouse = mouse_operate::get_engine();
     let mut rng = thread_rng();
     let start_time = SystemTime::now().duration_since(UNIX_EPOCH)
