@@ -2,16 +2,59 @@ use std::time::{SystemTime, UNIX_EPOCH, Duration};
 use mouse_common::mouse_operate;
 use std::thread;
 use rand::{thread_rng, Rng};
+/// 远程操作设置
+// // 关卡一
+// static BATTLE_POINT_1: (i32, i32) = (804, 766);
+// // 关卡二
+// static BATTLE_POINT_2: (i32, i32) = (797, 814);
+// // 关卡三
+// static BATTLE_POINT_3: (i32, i32) = (816, 873);
+// // 关卡四
+// static BATTLE_POINT_4: (i32, i32) = (811, 931);
+// // 关卡五
+// static BATTLE_POINT_5: (i32, i32) = (810, 981);
+// // 喝水确认按钮
+// static DRINKING_CONFIRM_POINT:(i32, i32)= (536, 933);
+// // 确认挑战
+// static FIGHT_POINT:(i32, i32) = (744, 999);
+// // 大跳
+// static ALL_SKIP_POINT:(i32, i32)= (765, 1017);
+// // 大跳确认
+// static ALL_SKIP_POINT_CONFIRM:(i32, i32)= (537, 930);
+///
+///     家里配置
+///     关卡
+///     1： 724 678
+///     2： 722 726
+///     3:  720 775
+///     4:  721 821
+///     5:  731 866
+///
+///     fight: 660 887
+///     all skip : 675 896
+///
+///     # 这两个一样
+///     confirm : 476 822
+///     drinking confirm : 477 824
+///
 // 关卡一
-static BATTLE_POINT_1: (i32, i32) = (804, 766);
+static BATTLE_POINT_1: (i32, i32) = (724, 678);
 // 关卡二
-static BATTLE_POINT_2: (i32, i32) = (797, 814);
+static BATTLE_POINT_2: (i32, i32) = (722, 726);
 // 关卡三
-static BATTLE_POINT_3: (i32, i32) = (816, 873);
+static BATTLE_POINT_3: (i32, i32) = (720, 775);
 // 关卡四
-static BATTLE_POINT_4: (i32, i32) = (811, 931);
+static BATTLE_POINT_4: (i32, i32) = (721, 821);
 // 关卡五
-static BATTLE_POINT_5: (i32, i32) = (810, 981);
+static BATTLE_POINT_5: (i32, i32) = (731, 866);
+// 喝水确认按钮
+static DRINKING_CONFIRM_POINT:(i32, i32)= (476, 822);
+// 确认挑战
+static FIGHT_POINT:(i32, i32) = (660, 887);
+// 大跳
+static ALL_SKIP_POINT:(i32, i32)= (675, 896);
+// 大跳确认
+static ALL_SKIP_POINT_CONFIRM:(i32, i32)= (476, 822);
 
 fn main() {
     play()
@@ -19,14 +62,6 @@ fn main() {
 
 fn play() {
     let mut mouse = mouse_operate::get_engine();
-    // 喝水确认按钮
-    let drinking_confirm_point = (536, 933);
-    // 确认挑战
-    let fight_point = (744, 999);
-    // 大跳
-    let all_skip_point = (765, 1017);
-    // 大跳确认
-    let all_skip_point_confirm = (537, 930);
 
     let execute_time_sec = 60 * 60;
     let start_time = SystemTime::now().duration_since(UNIX_EPOCH)
@@ -39,16 +74,16 @@ fn play() {
         mouse.start_end_point_click(battle_point, battle_point, true);
         mouse.start_end_point_click(battle_point, battle_point, true);
         // 开始挑战
-        mouse.start_end_point_click(battle_point, fight_point, true);
-        mouse.start_end_point_click(fight_point, fight_point, true);
+        mouse.start_end_point_click(battle_point, FIGHT_POINT, true);
+        mouse.start_end_point_click(FIGHT_POINT, FIGHT_POINT, true);
         // 喝水确认
-        mouse.start_end_point_click(drinking_confirm_point, drinking_confirm_point, true);
-        mouse.start_end_point_click(drinking_confirm_point, drinking_confirm_point, true);
+        mouse.start_end_point_click(DRINKING_CONFIRM_POINT, DRINKING_CONFIRM_POINT, true);
+        mouse.start_end_point_click(DRINKING_CONFIRM_POINT, DRINKING_CONFIRM_POINT, true);
         // 等待加载画面
         thread::sleep(Duration::from_millis(rng.gen_range(5000, 9000)));
         // 大跳确认
-        mouse.start_end_point_click(all_skip_point, all_skip_point_confirm, true);
-        mouse.start_end_point_click(all_skip_point_confirm, all_skip_point_confirm, true);;
+        mouse.start_end_point_click(ALL_SKIP_POINT, ALL_SKIP_POINT_CONFIRM, true);
+        mouse.start_end_point_click(ALL_SKIP_POINT_CONFIRM, ALL_SKIP_POINT_CONFIRM, true);;
         // 等待执行胜利
         thread::sleep(Duration::from_millis(rng.gen_range(1000, 2000)));
         // 多点几次
