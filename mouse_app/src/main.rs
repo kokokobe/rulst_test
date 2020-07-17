@@ -1,4 +1,5 @@
-use iced::{Application, Command, Element, Settings, Text, TextInput, Column, Length, HorizontalAlignment, Scrollable, scrollable, Container, text_input};
+use iced::{Application, Command, Element, Settings, Text, TextInput, Column, Length, HorizontalAlignment,
+           Scrollable, scrollable, Container, text_input};
 
 use iced::widget::text_input::State;
 
@@ -8,35 +9,36 @@ fn main() {
 
 enum MouseEvent {
     Stopped(Position),
-    Moving,
+    Moving(Position),
 }
 
+#[derive(Debug, Clone)]
 struct Position {
     coordinate: (i32, i32),
     input: text_input::State,
 }
 
-#[derive(Debug)]
-struct MouseInput {
-    all_skip_input: text_input::State,
-    confirm_input: String,
-    backward_input: String,
-    fight_input: String,
-    pass_input: String,
+#[derive(Debug, Clone)]
+enum MouseInput {
+    AllSkipInput(Position),
+    ConfirmInput(Position),
+    BackwardInput(Position),
+    FightInput(Position),
+    PassInput(Position),
 }
 
 #[derive(Debug, Clone)]
 pub enum MouseMessage {
     //大跳
-    AllSkip,
+    AllSkip(MouseInput),
     //确认
-    Confirm,
+    Confirm(MouseInput),
     //返回
-    Backward,
+    Backward(MouseInput),
     //挑战
-    Fight,
+    Fight(MouseInput),
     //关卡
-    Pass,
+    Pass(MouseInput),
 }
 
 impl Application for MouseEvent {
@@ -58,14 +60,51 @@ impl Application for MouseEvent {
 
     fn view(&mut self) -> Element<Self::Message> {
         match self {
-            MouseEvent::Moving => loading_message(),
+            MouseEvent::Moving(pos) => loading_message(),
             MouseEvent::Stopped(pos) => {
                 let title = Text::new("todos")
                     .width(Length::Fill)
                     .size(100)
                     .color([0.5, 0.5, 0.5])
                     .horizontal_alignment(HorizontalAlignment::Center);
-                let input = TextInput::new(
+                let all_skip_input = TextInput::new(
+                    &mut pos.input,
+                    "What needs to be done?",
+                    "",
+                    |_arg| {
+                        println!("changed input");
+                        MouseMessage::AllSkip
+                    },
+                ).padding(15).size(30);
+                let confirm_input = TextInput::new(
+                    &mut pos.input,
+                    "What needs to be done?",
+                    "",
+                    |_arg| {
+                        println!("changed input");
+                        MouseMessage::AllSkip
+                    },
+                ).padding(15).size(30);
+                let backward_input = TextInput::new(
+                    &mut pos.input,
+                    "What needs to be done?",
+                    "",
+                    |_arg| {
+                        println!("changed input");
+                        MouseMessage::AllSkip()
+                    },
+                ).padding(15).size(30);
+                let fight_input = TextInput::new(
+                    &mut pos.input,
+                    "What needs to be done?",
+                    "",
+                    |_arg| {
+                        println!("changed input");
+                        //TODO
+                        MouseMessage::AllSkip
+                    },
+                ).padding(15).size(30);
+                let pass_input = TextInput::new(
                     &mut pos.input,
                     "What needs to be done?",
                     "",
@@ -78,7 +117,11 @@ impl Application for MouseEvent {
                     .max_width(800)
                     .spacing(20)
                     .push(title)
-                    .push(input);
+                    .push(all_skip_input)
+                    .push(confirm_input)
+                    .push(backward_input)
+                    .push(fight_input)
+                    .push(pass_input);
                 Column::new().push(content).into()
             }
         }

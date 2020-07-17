@@ -33,7 +33,7 @@ fn play() {
         .expect(" time went backwards");
     let mut rng = thread_rng();
     loop {
-        let battle_point = BATTLE_POINT_4;
+        let battle_point = BATTLE_POINT_2;
         //选关，开始挑战
         mouse.start_end_point_click(battle_point, battle_point, true);
         mouse.start_end_point_click(battle_point, battle_point, true);
