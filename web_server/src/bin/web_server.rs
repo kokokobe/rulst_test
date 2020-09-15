@@ -47,7 +47,11 @@ fn handle_connection(stream: TcpStream) {
         println!("enter 404");
         ("HTTP/1.1 404 NOT FOUND\r\n\r\n", "404.html")
     };
-    let contents = fs::read_to_string(filename).unwrap();
+    let env = env!("CARGO_MANIFEST_DIR");
+    let path = env.to_owned() + "/" + filename;
+    println!("env is {}", env);
+    println!("file path is:{}", path);
+    let contents = fs::read_to_string(path).unwrap();
     let response = format!("{}{}", status_line, contents);
     let stream = buf_reader.get_mut();
     stream.write_all(response.as_bytes()).unwrap();
