@@ -83,7 +83,7 @@ fn play() {
         thread::sleep(Duration::from_millis(rng.gen_range(5000, 9000)));
         // 大跳确认
         mouse.start_end_point_click(ALL_SKIP_POINT, ALL_SKIP_POINT_CONFIRM, true);
-        mouse.start_end_point_click(ALL_SKIP_POINT_CONFIRM, ALL_SKIP_POINT_CONFIRM, true);;
+        mouse.start_end_point_click(ALL_SKIP_POINT_CONFIRM, ALL_SKIP_POINT_CONFIRM, true);
         // 等待执行胜利
         thread::sleep(Duration::from_millis(rng.gen_range(1000, 2000)));
         // 多点几次

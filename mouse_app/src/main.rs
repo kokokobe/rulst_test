@@ -91,7 +91,7 @@ impl Application for MouseEvent {
                     "",
                     |_arg| {
                         println!("changed input");
-                        MouseMessage::AllSkip()
+                        MouseMessage::AllSkip
                     },
                 ).padding(15).size(30);
                 let fight_input = TextInput::new(
