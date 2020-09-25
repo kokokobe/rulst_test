@@ -5,27 +5,27 @@ use rand::{thread_rng, Rng};
 
 /// 远程操作设置
 // 关卡一
-static BATTLE_POINT_1: (i32, i32) = (804, 766);
-// 关卡二
-static BATTLE_POINT_2: (i32, i32) = (797, 814);
-// 关卡三
-static BATTLE_POINT_3: (i32, i32) = (816, 873);
-// 关卡四
-static BATTLE_POINT_4: (i32, i32) = (811, 931);
-// 关卡五
-static BATTLE_POINT_5: (i32, i32) = (810, 981);
-// 喝水确认按钮
-static DRINKING_CONFIRM_POINT: (i32, i32) = (536, 933);
-// 确认挑战
-static FIGHT_POINT: (i32, i32) = (744, 999);
-// 大跳
-static ALL_SKIP_POINT: (i32, i32) = (765, 1017);
-// 大跳确认
-static ALL_SKIP_POINT_CONFIRM: (i32, i32) = (537, 930);
-// 喝水选择 100
-static DRINK_SELECT_100: (i32, i32) = (446, 798);
-// 喝水大水
-static DRINK_WHOLE: (i32, i32) = (445, 854);
+// static BATTLE_POINT_1: (i32, i32) = (804, 766);
+// // 关卡二
+// static BATTLE_POINT_2: (i32, i32) = (797, 814);
+// // 关卡三
+// static BATTLE_POINT_3: (i32, i32) = (816, 873);
+// // 关卡四
+// static BATTLE_POINT_4: (i32, i32) = (811, 931);
+// // 关卡五
+// static BATTLE_POINT_5: (i32, i32) = (810, 981);
+// // 喝水确认按钮
+// static DRINKING_CONFIRM_POINT: (i32, i32) = (536, 933);
+// // 确认挑战
+// static FIGHT_POINT: (i32, i32) = (744, 999);
+// // 大跳
+// static ALL_SKIP_POINT: (i32, i32) = (765, 1017);
+// // 大跳确认
+// static ALL_SKIP_POINT_CONFIRM: (i32, i32) = (537, 930);
+// // 喝水选择 100
+// static DRINK_SELECT_100: (i32, i32) = (446, 798);
+// // 喝水大水
+// static DRINK_WHOLE: (i32, i32) = (445, 854);
 
 ///
 ///     家里配置
@@ -43,28 +43,29 @@ static DRINK_WHOLE: (i32, i32) = (445, 854);
 ///     confirm : 476 822
 ///     drinking confirm : 477 824
 ///
-// // 关卡一
-// static BATTLE_POINT_1: (i32, i32) = (724, 678);
-// // 关卡二
-// static BATTLE_POINT_2: (i32, i32) = (722, 726);
-// // 关卡三
-// static BATTLE_POINT_3: (i32, i32) = (720, 775);
-// // 关卡四
-// static BATTLE_POINT_4: (i32, i32) = (721, 821);
-// // 关卡五
-// static BATTLE_POINT_5: (i32, i32) = (731, 866);
-// // 喝水确认按钮
-// static DRINKING_CONFIRM_POINT: (i32, i32) = (476, 822);
-// // 确认挑战
-// static FIGHT_POINT: (i32, i32) = (660, 887);
-// // 大跳
-// static ALL_SKIP_POINT: (i32, i32) = (675, 896);
-// // 大跳确认
-// static ALL_SKIP_POINT_CONFIRM: (i32, i32) = (476, 822);
+// 关卡一
+static BATTLE_POINT_1: (i32, i32) = (724, 678);
+// 关卡二
+static BATTLE_POINT_2: (i32, i32) = (722, 726);
+// 关卡三
+static BATTLE_POINT_3: (i32, i32) = (720, 775);
+// 关卡四
+static BATTLE_POINT_4: (i32, i32) = (721, 821);
+// 关卡五
+static BATTLE_POINT_5: (i32, i32) = (731, 866);
+// 喝水确认按钮
+static DRINKING_CONFIRM_POINT: (i32, i32) = (476, 822);
+// 确认挑战
+static FIGHT_POINT: (i32, i32) = (660, 887);
+// 大跳
+static ALL_SKIP_POINT: (i32, i32) = (675, 896);
+// 大跳确认
+static ALL_SKIP_POINT_CONFIRM: (i32, i32) = (476, 822);
+
 // 喝水选择 100
-// static DRINK_SELECT_100: (i32, i32) = (446, 798);
+static DRINK_SELECT_100: (i32, i32) = (446, 798);
 // 喝水大水
-// static DRINK_WHOLE: (i32, i32) = (445, 854);
+static DRINK_WHOLE: (i32, i32) = (399, 756);
 
 
 fn main() {
