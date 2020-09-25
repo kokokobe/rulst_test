@@ -53,14 +53,13 @@ static BATTLE_POINT_3: (i32, i32) = (720, 775);
 static BATTLE_POINT_4: (i32, i32) = (721, 821);
 // 关卡五
 static BATTLE_POINT_5: (i32, i32) = (731, 866);
-// 喝水确认按钮
-static DRINKING_CONFIRM_POINT: (i32, i32) = (476, 822);
+
 // 确认挑战
 static FIGHT_POINT: (i32, i32) = (660, 887);
 // 大跳
 static ALL_SKIP_POINT: (i32, i32) = (675, 896);
 // 大跳确认
-static ALL_SKIP_POINT_CONFIRM: (i32, i32) = (476, 822);
+static CONFIRM: (i32, i32) = (476, 822);
 
 // 喝水选择 100
 static DRINK_SELECT_100: (i32, i32) = (446, 798);
@@ -91,8 +90,8 @@ fn play() {
         mouse.start_end_point_click(DRINK_WHOLE, DRINK_WHOLE, false);
         mouse.start_end_point_click(DRINK_WHOLE, DRINK_WHOLE, false);
         // 喝水确认
-        mouse.start_end_point_click(DRINKING_CONFIRM_POINT, DRINKING_CONFIRM_POINT, true);
-        mouse.start_end_point_click(DRINKING_CONFIRM_POINT, DRINKING_CONFIRM_POINT, true);
+        mouse.start_end_point_click(CONFIRM, CONFIRM, true);
+        mouse.start_end_point_click(CONFIRM, CONFIRM, true);
         // 等待加载画面
         thread::sleep(Duration::from_millis(rng.gen_range(5000, 9000)));
         // 大跳确认
