@@ -4,6 +4,7 @@ use briliang_exercise::Config;
 
 
 fn main() {
+    log4rs::init_file("config/log4rs.yaml", Default::default()).unwrap();
 
     let config = Config::new(env::args()).unwrap_or_else(|err| {
         eprintln!("Problem parsing arguments: {}", err);

@@ -10,6 +10,6 @@ repository = "https://github.com/kokokobe/rust_test"
 [dependencies]
 rand = "0.7.3"
 ## log rs
-log = "0.4.8"
-log4rs = {version = "0.11.0"}
+log = "0.4.11"
+log4rs = {version = "0.13.0"}
 hello_marco_derive = {path="../hello_marco_derive"}

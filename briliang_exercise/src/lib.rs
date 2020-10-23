@@ -31,9 +31,11 @@ pub trait HelloMacro {
     fn hello_macro();
 }
 
-#[macro_use]
-extern crate log;
-extern crate log4rs;
+// #[macro_use]
+// extern crate log;
+use log::{info};
+// use log4rs;
+// extern crate log4rs;
 
 
 #[derive(Debug)]
@@ -55,7 +57,9 @@ impl Config {
         };
         let file_name = match args.next() {
             Some(arg) => arg,
-            None => return Err("Didn't get a file name"),
+            None => {
+                return Err("Didn't get a file name");
+            }
         };
         let case_sensitive = env::var("CASE_INSENSITIVE").is_err();
         Ok(Config {
@@ -76,6 +80,7 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
     };
     for line in result {
         println!("{}", line);
+        info!("{}", line);
     }
     Ok(())
 }
