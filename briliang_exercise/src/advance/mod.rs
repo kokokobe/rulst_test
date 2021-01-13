@@ -4,6 +4,7 @@ mod tests {
     use std::ops::Add;
     use std::fmt;
     use std::fmt::{Display, Formatter, Error};
+    use log::{info};
 
     ///Those superpowers include the ability to:
         ///
