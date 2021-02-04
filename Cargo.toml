@@ -1,6 +1,8 @@
 [workspace]
-members=["briliang_exercise","guessing_game","hello_marco_derive","web_server","mouse_position",
-"mouse_app","mouse_common","mouse_script","async_await"]
+members = [
+    "briliang_exercise", "guessing_game", "hello_marco_derive", "web_server", "mouse_position",
+    "mouse_app", "mouse_common", "mouse_script", "async_await"
+]
 
 [profile.release]
 panic = 'abort'
@@ -8,3 +10,8 @@ opt-level = 3
 
 [profile.dev]
 opt-level = 0
+debug = true
+debug-assertions = true
+overflow-checks = true
+lto = false
+panic = 'unwind'
