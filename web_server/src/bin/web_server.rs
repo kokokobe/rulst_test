@@ -45,7 +45,7 @@ fn handle_connection(stream: TcpStream) {
         ("HTTP/1.1 200 OK\r\n\r\n", "hello.html")
     } else {
         println!("enter 404");
-        ("HTTP/1.1 404 NOT FOUND\r\n\r\n", "404.html")
+        ("HTTP/1.1 404 NOT FOUND\r\n\r\n", "static/404.html")
     };
     let env = env!("CARGO_MANIFEST_DIR");
     let path = env.to_owned() + "/" + filename;
