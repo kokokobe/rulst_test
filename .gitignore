@@ -11,3 +11,8 @@
 
 Cargo.lock
 target
+
+# log
+*.log
+log
+*/log

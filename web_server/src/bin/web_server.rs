@@ -42,7 +42,7 @@ fn handle_connection(stream: TcpStream) {
     let get = "GET / HTTP/1.1\r\n";
     let (status_line, filename) = if header.starts_with(get) {
         println!("enter hello");
-        ("HTTP/1.1 200 OK\r\n\r\n", "hello.html")
+        ("HTTP/1.1 200 OK\r\n\r\n", "static/hello.html")
     } else {
         println!("enter 404");
         ("HTTP/1.1 404 NOT FOUND\r\n\r\n", "static/404.html")
