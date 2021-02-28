@@ -13,6 +13,7 @@ mod tests {
                     let mut temp_vec = Vec::new();
                     //这一段表示每一次匹配所做的事情
                     $(
+                        println!("$x is :{}",$x);
                         temp_vec.push($x);
                     )*
                     temp_vec
@@ -22,6 +23,7 @@ mod tests {
         let v: Vec<u32> = vec![1, 2, 3];
         println!("vector is:{:?}", v);
         macro_rules! m {
+            //literal 字面量
             ($lt:literal) => {
                 println!($lt)
             }
