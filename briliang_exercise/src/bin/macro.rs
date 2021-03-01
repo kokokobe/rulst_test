@@ -25,6 +25,6 @@ fn main() {
 
     pub trait Index : PartialEq + Copy {
         fn to_usize(self) -> usize;
-        fn from(usize) -> Self;
+        fn from(_i: usize) -> Self;
     }
 }
