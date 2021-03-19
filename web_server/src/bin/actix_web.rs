@@ -9,11 +9,14 @@ use log4rs;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
+    use std::env;
+    let exe_path = env::current_exe()?;
+    let exe_path_dir = exe_path.parent().expect("Executable must be in some directory");
+    println!("The execute path dir is:{:?}", exe_path_dir);
+    let path = env::current_dir()?;
+    println!("The current directory is {}", path.display());
     log4rs::init_file("web_server/config/log4rs.yaml", Default::default()).unwrap();
     info!("starting actix web server");
-    use std::env;
-    let path = env::current_dir()?;
-    info!("The current directory is {}", path.display());
 
     HttpServer::new(||
         App::new()
