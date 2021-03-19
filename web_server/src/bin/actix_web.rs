@@ -15,7 +15,7 @@ async fn main() -> std::io::Result<()> {
     println!("The execute path dir is:{:?}", exe_path_dir);
     let path = env::current_dir()?;
     println!("The current directory is {}", path.display());
-    log4rs::init_file("web_server/config/log4rs.yaml", Default::default()).unwrap();
+    log4rs::init_file("config/log4rs.yaml", Default::default()).unwrap();
     info!("starting actix web server");
 
     HttpServer::new(||
@@ -59,7 +59,7 @@ async fn home() -> impl Responder {
 
 /// 404 handler
 async fn p404() -> Result<fs::NamedFile> {
-    let file_name = "web_server/static/404.html";
+    let file_name = "static/404.html";
     let result = fs::NamedFile::open(file_name);
     let named_file = result.unwrap();
     Ok(named_file.set_status_code(StatusCode::NOT_FOUND))
