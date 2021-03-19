@@ -9,7 +9,7 @@ appenders:
   # An appender named "requests" that writes to a file with a custom pattern encoder
   requests:
     kind: file
-    path: "web_server/log/requests.log"
+    path: "log/requests.log"
     encoder:
       pattern: "[{M}] [{d(%Y-%m-%d %H:%M:%S)}] [{l}] {m}{n}"
 
