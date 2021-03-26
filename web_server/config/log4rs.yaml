@@ -5,6 +5,8 @@ appenders:
   # An appender named "stdout" that writes to stdout
   stdout:
     kind: console
+    encoder:
+      pattern: "[{M}] [{d(%Y-%m-%d %H:%M:%S)}] [{l}] {m}{n}"
 
   # An appender named "requests" that writes to a file with a custom pattern encoder
   requests:
@@ -17,7 +19,7 @@ appenders:
 root:
   level: info
   appenders:
-    - requests
+    - stdout
 
 loggers:
   # Raise the maximum log level for events sent to the "app::backend::db" logger to "info"

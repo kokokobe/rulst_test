@@ -1,3 +1,5 @@
+mod server;
+
 use std::sync::{Arc, mpsc, Mutex};
 use std::thread;
 use std::thread::JoinHandle;
