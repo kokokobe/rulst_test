@@ -5,6 +5,9 @@ use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::Arc;
 use actix::dev::MessageResponse;
 use rand::Rng;
+use uuid::Uuid;
+use rand::seq::index::IndexVec::USize;
+use std::convert::TryFrom;
 
 /// `ChatServer` manages chat rooms and responsible for coordinating chat
 /// session. implementation is super primitive
@@ -45,7 +48,7 @@ impl ChatServer {
 impl Actor for ChatServer {
     /// We are going to use simple Context, we just need ability to communicate
     /// with other actors.
-    type Context = Context(Self);
+    type Context = Context<Self>;
 }
 
 /// Handler for Connect message.
@@ -61,8 +64,8 @@ impl Handler<Connect> for ChatServer {
         let id = self.rng.gen();
         self.sessions.insert(id, msg.addr);
         // auto join session to Main room
-        self.rooms.entry("Main".to_owned()).or_insert_with(HashSet::new()).insert(id);
-        self.visitor_count.fetch_add(1, Ordering::SeqCst);
+        self.rooms.entry("Main".to_owned()).or_insert_with(HashSet::new).insert(id);
+        let count = self.visitor_count.fetch_add(1, Ordering::SeqCst);
         self.send_message("Main", &format!("Total visitors {}", count), 0);
         //send id back
         id
@@ -73,7 +76,63 @@ impl Handler<Disconnect> for ChatServer {
     type Result = ();
 
     fn handle(&mut self, msg: Disconnect, ctx: &mut Context<Self>) -> Self::Result {
-        unimplemented!()
+        println!("Someone disconnected");
+        let mut rooms: Vec<String> = Vec::new();
+        // remove address
+        if self.sessions.remove(&msg.id).is_some() {
+            // remove session from all rooms
+            for (name, sessions) in &mut self.rooms {
+                if sessions.remove(&msg.id) {
+                    rooms.push(name.to_owned());
+                }
+            }
+        }
+        // send message to other users
+        for room in rooms {
+            self.send_message(&room, "Someone disconnected", 0);
+        }
+    }
+}
+
+/// Handler for Message message.
+impl Handler<ClientMessage> for ChatServer {
+    type Result = ();
+
+    fn handle(&mut self, msg: ClientMessage, ctx: &mut Context<Self>) -> Self::Result {
+        self.send_message(&msg.room, msg.msg.as_str(), msg.id);
+    }
+}
+
+/// Handle for `ListRooms` message.
+impl Handler<ListRooms> for ChatServer {
+    type Result = MessageResult<ListRooms>;
+
+    fn handle(&mut self, msg: ListRooms, ctx: &mut Context<Self>) -> Self::Result {
+        let mut rooms = Vec::new();
+        for key in self.rooms.keys() {
+            rooms.push(key.to_owned())
+        }
+        MessageResult(rooms)
+    }
+}
+
+impl Handler<Join> for ChatServer {
+    type Result = ();
+
+    fn handle(&mut self, msg: Join, ctx: &mut Context<Self>) -> Self::Result {
+        let Join { id, name } = msg;
+        //modify rooms
+        let mut rooms = Vec::new();
+        for (name, sessions) in &mut self.rooms {
+            if sessions.remove(&id) {
+                rooms.push(name.to_owned());
+            }
+        }
+        // send message to other users
+        for room in rooms {
+            self.send_message(&room, "Someone disconnected", 0);
+        }
+        self.rooms.entry(name.clone()).or_insert_with(HashSet::new).insert(id);
     }
 }
 
@@ -86,12 +145,15 @@ pub struct Message(pub String);
 #[derive(Message)]
 #[rtype(result = "()")]
 pub struct Disconnect {
+    //user session id
     pub id: usize
 }
 
 ///New chat session is created
+#[derive(Message)]
+#[rtype(usize)]
 pub struct Connect {
-    pub addr: Recepient<Message>
+    pub addr: Recipient<Message>
 }
 
 /// Send message to specific room
@@ -116,7 +178,7 @@ impl actix::Message for ListRooms {
 #[derive(Message)]
 #[rtype(result = "()")]
 pub struct Join {
-    /// Client id
+    /// Client session id
     pub id: usize,
     /// Room name
     pub name: String,

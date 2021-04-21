@@ -1,4 +1,4 @@
-mod server;
+pub mod server;
 
 use std::sync::{Arc, mpsc, Mutex};
 use std::thread;
