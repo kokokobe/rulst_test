@@ -8,6 +8,7 @@ use rand::Rng;
 use uuid::Uuid;
 use rand::seq::index::IndexVec::USize;
 use std::convert::TryFrom;
+use log::{info};
 
 /// `ChatServer` manages chat rooms and responsible for coordinating chat
 /// session. implementation is super primitive
@@ -58,7 +59,7 @@ impl Handler<Connect> for ChatServer {
     type Result = usize;
 
     fn handle(&mut self, msg: Connect, ctx: &mut Context<Self>) -> Self::Result {
-        println!("Someone joined");
+        info!("Someone joined");
         self.send_message(&"Main", "Someone joined", 0);
         // register session with random id
         let id = self.rng.gen();
@@ -76,7 +77,7 @@ impl Handler<Disconnect> for ChatServer {
     type Result = ();
 
     fn handle(&mut self, msg: Disconnect, ctx: &mut Context<Self>) -> Self::Result {
-        println!("Someone disconnected");
+        info!("Someone disconnected");
         let mut rooms: Vec<String> = Vec::new();
         // remove address
         if self.sessions.remove(&msg.id).is_some() {

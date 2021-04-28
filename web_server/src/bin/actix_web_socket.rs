@@ -2,10 +2,10 @@ use log::{info};
 use log4rs;
 use std::sync::Arc;
 use std::sync::atomic::{AtomicUsize, Ordering};
-use actix_web::{HttpServer, App, web, HttpResponse, Responder, Error, HttpRequest};
+use actix_web::{HttpServer, App, web, HttpResponse, Responder, Error, HttpRequest, get};
 use std::time::{Duration, Instant};
 use web_server::server::*;
-use actix::*;
+use actix::prelude::*;
 use actix_web_actors::ws;
 use actix_files;
 use actix::dev::MessageResponse;
@@ -35,8 +35,8 @@ async fn main() -> std::io::Result<()> {
                 HttpResponse::Found().header("LOCATION", "/static/web_socket.html")
                     .finish()
             })))
-            .route("/count/", web::get().to(get_count))
-            .service(web::resource("/ws").to(chat_route))
+            .route("/count", web::get().to(get_count))
+            .service(chat_route)
             .service(actix_files::Files::new("/static/", "static/"))
     })
         .bind("127.0.0.1:8080")?
@@ -44,13 +44,14 @@ async fn main() -> std::io::Result<()> {
         .await
 }
 
-async fn get_count(count: web::Data<Arc<AtomicUsize>>) -> impl Responder {
+pub async fn get_count(count: web::Data<Arc<AtomicUsize>>) -> impl Responder {
     let current_count = count.fetch_add(1, Ordering::SeqCst);
     format!("Visitors: {}", current_count)
 }
 
 /// Entry point for our websocket route
-async fn chat_route(req: HttpRequest, stream: web::Payload, srv: web::Data<Addr<ChatServer>>)
+#[get("/ws/")]
+pub async fn chat_route(req: HttpRequest, stream: web::Payload, srv: web::Data<Addr<ChatServer>>)
                     -> Result<HttpResponse, Error> {
     info!("chat_route init");
     ws::start(WsChatSession {
@@ -126,7 +127,7 @@ impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for WsChatSession {
             }
             Ok(item) => item,
         };
-        println!("WEBSOCKET MESSAGE:{:?}", msg);
+        info!("WEBSOCKET MESSAGE:{:?}", msg);
         match msg {
             ws::Message::Ping(msg) => {
                 self.hb = Instant::now();
@@ -172,14 +173,14 @@ impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for WsChatSession {
                                 ctx.text("!!! room name is required");
                             }
                         }
-                        "name" => {
+                        "/name" => {
                             if v.len() == 2 {
                                 self.name = Some(v[1].to_owned());
                             } else {
                                 ctx.text("!!! name is required");
                             }
                         }
-                        &_ => {
+                        _ => {
                             ctx.text(format!("!!! unknown command:{:?}", m))
                         }
                     }
