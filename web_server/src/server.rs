@@ -1,14 +1,15 @@
 use std::collections::{HashMap, HashSet};
-use actix::prelude::*;
-use rand::rngs::ThreadRng;
-use std::sync::atomic::{AtomicUsize, Ordering};
-use std::sync::Arc;
-use actix::dev::MessageResponse;
-use rand::Rng;
-use uuid::Uuid;
-use rand::seq::index::IndexVec::USize;
 use std::convert::TryFrom;
-use log::{info};
+use std::sync::Arc;
+use std::sync::atomic::{AtomicUsize, Ordering};
+
+use actix::dev::MessageResponse;
+use actix::prelude::*;
+use log::info;
+use rand::Rng;
+use rand::rngs::ThreadRng;
+use rand::seq::index::IndexVec::USize;
+use uuid::Uuid;
 
 /// `ChatServer` manages chat rooms and responsible for coordinating chat
 /// session. implementation is super primitive
@@ -59,7 +60,7 @@ impl Handler<Connect> for ChatServer {
     type Result = usize;
 
     fn handle(&mut self, msg: Connect, ctx: &mut Context<Self>) -> Self::Result {
-        info!("Someone joined");
+        info!("Someone joined remote ip:{:?}", msg.remote_ip);
         self.send_message(&"Main", "Someone joined", 0);
         // register session with random id
         let id = self.rng.gen();
@@ -77,7 +78,7 @@ impl Handler<Disconnect> for ChatServer {
     type Result = ();
 
     fn handle(&mut self, msg: Disconnect, ctx: &mut Context<Self>) -> Self::Result {
-        info!("Someone disconnected");
+        info!("Someone disconnected remote ip :{:?}", msg.remote_ip);
         let mut rooms: Vec<String> = Vec::new();
         // remove address
         if self.sessions.remove(&msg.id).is_some() {
@@ -147,14 +148,16 @@ pub struct Message(pub String);
 #[rtype(result = "()")]
 pub struct Disconnect {
     //user session id
-    pub id: usize
+    pub id: usize,
+    pub remote_ip: String,
 }
 
 ///New chat session is created
 #[derive(Message)]
 #[rtype(usize)]
 pub struct Connect {
-    pub addr: Recipient<Message>
+    pub addr: Recipient<Message>,
+    pub remote_ip: String,
 }
 
 /// Send message to specific room

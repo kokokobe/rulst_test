@@ -1,16 +1,19 @@
-use log::{info};
-use log4rs;
+use std::borrow::Borrow;
 use std::sync::Arc;
 use std::sync::atomic::{AtomicUsize, Ordering};
-use actix_web::{HttpServer, App, web, HttpResponse, Responder, Error, HttpRequest, get};
 use std::time::{Duration, Instant};
-use web_server::server::*;
-use actix::prelude::*;
-use actix_web_actors::ws;
-use actix_files;
+
 use actix::dev::MessageResponse;
-use web_server::server;
+use actix::prelude::*;
+use actix_files;
+use actix_web::{App, Error, get, HttpRequest, HttpResponse, HttpServer, Responder, web};
+use actix_web_actors::ws;
 use actix_web_actors::ws::ProtocolError;
+use log::info;
+use log4rs;
+
+use web_server::server::*;
+use web_server::server;
 
 /// How often heartbeat pings are sent
 const HEARTBEAT_INTERVAL: Duration = Duration::from_secs(5);
@@ -52,15 +55,16 @@ pub async fn get_count(count: web::Data<Arc<AtomicUsize>>) -> impl Responder {
 /// Entry point for our websocket route
 #[get("/ws/")]
 pub async fn chat_route(req: HttpRequest, stream: web::Payload, srv: web::Data<Addr<ChatServer>>)
-                    -> Result<HttpResponse, Error> {
-    info!("chat_route init");
-    ws::start(WsChatSession {
+                        -> Result<HttpResponse, Error> {
+    let ws_chat_session = WsChatSession {
         id: 0,
         hb: Instant::now(),
         room: "Main".to_string(),
         name: None,
         addr: srv.get_ref().clone(),
-    }, &req, stream)
+        remote_ip: req.connection_info().remote_addr().expect("error get remote ip").to_string(),
+    };
+    ws::start(ws_chat_session, &req, stream)
 }
 
 struct WsChatSession {
@@ -75,6 +79,7 @@ struct WsChatSession {
     name: Option<String>,
     ///chat server
     addr: Addr<ChatServer>,
+    remote_ip: String,
 }
 
 impl Actor for WsChatSession {
@@ -91,7 +96,7 @@ impl Actor for WsChatSession {
         // HttpContext::state() is instance of WsChatSessionState, state is shared
         // across all routes within application
         let addr = ctx.address();
-        self.addr.send(Connect { addr: addr.recipient() }).into_actor(self)
+        self.addr.send(Connect { addr: addr.recipient(), remote_ip: self.remote_ip.clone() }).into_actor(self)
             .then(|res, act, ctx| {
                 match res {
                     Ok(res) => act.id = res,
@@ -104,7 +109,9 @@ impl Actor for WsChatSession {
 
     fn stopping(&mut self, ctx: &mut Self::Context) -> Running {
         // notify chat server
-        self.addr.do_send(Disconnect { id: self.id });
+        let remote_ip = self.remote_ip.clone();
+        let id = self.id.clone();
+        self.addr.do_send(Disconnect { id, remote_ip });
         Running::Stop
     }
 }
@@ -222,7 +229,7 @@ impl WsChatSession {
                 // heartbeat timed out
                 info!("Websocket Client heartbeat failed, disconnecting!");
                 // notify chat server
-                act.addr.do_send(Disconnect { id: act.id });
+                act.addr.do_send(Disconnect { id: act.id, remote_ip: act.remote_ip.clone() });
                 //stop actor
                 ctx.stop();
                 // don't try to send a ping
